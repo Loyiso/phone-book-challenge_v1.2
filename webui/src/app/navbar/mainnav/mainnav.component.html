@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span>Phone Book</span>
+        <span class="spacer"></span>
+        <button mat-button [routerLink]="['/profile']">Profile</button>
+        <button mat-button [routerLink]="['/history']">History</button>
+        <button mat-button [routerLink]="['/contacts']">Contacts</button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-nav-list style="background-color: blue;opacity: 60%; display: none;">
+    <a mat-list-item [routerLink]="['/profile']">Profile</a>
+    <a mat-list-item [routerLink]="['/history']">History</a>
+    <a mat-list-item [routerLink]="['/contacts']">Contacts</a>
+</mat-nav-list>

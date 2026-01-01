@@ -1,0 +1,39 @@
+@if((!data || !headers) || (data.length === 0 || headers.length === 0)) {
+    @if(loading) {
+        <div class="alert alert-info">
+            <strong>Loading...</strong>
+        </div>
+    }
+    @else {
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> No data to display.
+        </div>
+    }
+}
+@else {
+    <table>
+        <thead>
+            <tr>
+                @for (header of headers; track $index) {
+                    <th>{{ header }}</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of data; track item[0]) {
+                <tr>
+                    @for (header of headers; track header) {
+                        <td>{{ item[header.toLowerCase()] }}</td>
+                    }
+                    @if(actions) {
+                        <td>
+                            @for (action of actions; track action) {
+                                <button (click)="action.action(item)">{{ action.label }}</button>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}

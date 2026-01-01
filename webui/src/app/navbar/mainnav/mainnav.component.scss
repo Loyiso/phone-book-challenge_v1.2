@@ -1,0 +1,15 @@
+.mat-toolbar-row {
+    justify-content: space-between;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-nav-list {
+    width: 200px;
+    height: calc(100vh - 64px); // 64px is the height of the toolbar
+    position: fixed;
+    top: 64px; // Position the list below the toolbar
+    overflow: auto;
+}

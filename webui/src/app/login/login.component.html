@@ -1,0 +1,16 @@
+@if (isAuthenticating) {
+  <div>Authenticating...</div>
+}
+@else {
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label>
+        Email:
+        <input type="email" formControlName="email">
+      </label>
+    <label>
+      Password:
+      <input type="password" formControlName="password">
+    </label>
+    <button type="submit" [disabled]="isAuthenticating">Login</button>
+  </form>
+}
