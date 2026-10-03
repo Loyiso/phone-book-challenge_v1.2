@@ -1,2 +1,17 @@
-<h1>Contacts</h1>
-<app-data-grid [loading]="loading" [headers]="getHeaders()" [data]="contacts" [actions]="actions"></app-data-grid>
+<section class="min-h-[calc(100vh-56px)] bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-7xl">
+		<header class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+			<div>
+				<p class="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-violet-700">Your network</p>
+				<h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Contacts</h1>
+				<p class="mt-2 text-sm text-slate-500">Keep the people you know close and easy to reach.</p>
+			</div>
+			<div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 shadow-sm">
+				<span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+				<span><span class="font-semibold text-slate-900">{{ contacts.length }}</span> contacts</span>
+			</div>
+		</header>
+
+		<app-data-grid class="block" [loading]="loading" [headers]="getHeaders()" [data]="contacts" [actions]="actions"></app-data-grid>
+	</div>
+</section>
