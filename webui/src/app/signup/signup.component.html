@@ -1,24 +1,24 @@
 @if (isSubmitting) {
-  <div>Authenticating...</div>
+  <div class="grid min-h-screen place-items-center text-gray-700" role="status">Authenticating...</div>
 }
 @else {
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <label>
+  <form class="mx-auto flex min-h-screen w-full max-w-sm flex-col justify-center gap-4 box-border px-6" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <label class="flex flex-col gap-2 text-sm font-medium text-gray-700">
       Name:
-      <input type="email" formControlName="name">
+      <input class="w-full rounded-md border border-gray-300 px-3 py-2 text-base outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-200" type="email" formControlName="name">
     </label>
-    <label>
+    <label class="flex flex-col gap-2 text-sm font-medium text-gray-700">
       Surname:
-      <input type="email" formControlName="surname">
+      <input class="w-full rounded-md border border-gray-300 px-3 py-2 text-base outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-200" type="email" formControlName="surname">
     </label>
-    <label>
+    <label class="flex flex-col gap-2 text-sm font-medium text-gray-700">
       Email:
-      <input type="email" formControlName="email">
+      <input class="w-full rounded-md border border-gray-300 px-3 py-2 text-base outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-200" type="email" formControlName="email">
     </label>
-    <label>
+    <label class="flex flex-col gap-2 text-sm font-medium text-gray-700">
       Password:
-      <input type="password" formControlName="password">
+      <input class="w-full rounded-md border border-gray-300 px-3 py-2 text-base outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-200" type="password" formControlName="password">
     </label>
-    <button type="submit" [disabled]="isSubmitting">Login</button>
+    <button class="w-full rounded-md bg-violet-700 px-4 py-3 font-semibold text-white transition-colors hover:bg-violet-800 disabled:cursor-not-allowed disabled:opacity-60" type="submit" [disabled]="isSubmitting">Register</button>
   </form>
 }
