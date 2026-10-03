@@ -1,15 +1,39 @@
-<mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <span>Phone Book</span>
-        <span class="spacer"></span>
-        <button mat-button [routerLink]="['/profile']">Profile</button>
-        <button mat-button [routerLink]="['/history']">History</button>
-        <button mat-button [routerLink]="['/contacts']">Contacts</button>
-    </mat-toolbar-row>
-</mat-toolbar>
+<header class="relative z-20 bg-violet-800 text-white shadow-md">
+    <nav class="mx-auto flex min-h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+        <a class="rounded-sm text-lg font-bold tracking-tight focus:outline-none focus:ring-2 focus:ring-white" [routerLink]="['/contacts']">
+            Phone Book
+        </a>
 
-<mat-nav-list style="background-color: blue;opacity: 60%; display: none;">
-    <a mat-list-item [routerLink]="['/profile']">Profile</a>
-    <a mat-list-item [routerLink]="['/history']">History</a>
-    <a mat-list-item [routerLink]="['/contacts']">Contacts</a>
-</mat-nav-list>
+        <div class="hidden items-center gap-1 md:flex">
+            <a class="rounded-md px-4 py-2 text-sm font-medium text-violet-100 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white" [routerLink]="['/profile']">Profile</a>
+            <a class="rounded-md px-4 py-2 text-sm font-medium text-violet-100 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white" [routerLink]="['/history']">History</a>
+            <a class="rounded-md px-4 py-2 text-sm font-medium text-violet-100 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white" [routerLink]="['/contacts']">Contacts</a>
+        </div>
+
+        <button
+            class="inline-flex h-10 w-10 items-center justify-center rounded-md text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white md:hidden"
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-controls="mobile-navigation"
+            [attr.aria-expanded]="isMobileMenuOpen"
+            (click)="toggleMobileMenu()">
+            @if (isMobileMenuOpen) {
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            } @else {
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            }
+        </button>
+    </nav>
+
+    @if (isMobileMenuOpen) {
+        <div id="mobile-navigation" class="absolute inset-x-0 top-full border-t border-violet-700 bg-violet-800 px-4 pb-3 pt-2 shadow-lg md:hidden">
+            <a class="block rounded-md px-3 py-3 text-sm font-medium text-violet-100 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" [routerLink]="['/profile']" (click)="closeMobileMenu()">Profile</a>
+            <a class="block rounded-md px-3 py-3 text-sm font-medium text-violet-100 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" [routerLink]="['/history']" (click)="closeMobileMenu()">History</a>
+            <a class="block rounded-md px-3 py-3 text-sm font-medium text-violet-100 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" [routerLink]="['/contacts']" (click)="closeMobileMenu()">Contacts</a>
+        </div>
+    }
+</header>
