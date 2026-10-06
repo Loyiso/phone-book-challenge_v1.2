@@ -10,11 +10,10 @@ export interface Contact {
 
 export interface MessageModel
 {
-  id: number,
-  type: string,
-  body: string,
-  contactName: string,
-  status: string,
-  createdAt: Date,
-  updatedAt: Date
+  id: number;
+  type: string;
+  body: string;
+  contactName: string;
+  status: string;
+  date: string;
 }

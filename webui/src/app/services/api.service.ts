@@ -2,7 +2,7 @@ import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Observable, catchError} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {Contact, MessageModel} from '../models/contact.model';
 
 export interface UserProfile {
@@ -88,11 +88,9 @@ export class ApiService {
   }
 
   getMessages(): Observable<MessageModel[]> {
-    return this.http.get<any>(`${this.apiUrl}messages`, {
+    return this.http.get<MessageModel[]>(`${this.apiUrl}messages`, {
         withCredentials: true
       }
-    ).pipe(
-      map(response => response.messages as MessageModel[])
     );
   }
 
