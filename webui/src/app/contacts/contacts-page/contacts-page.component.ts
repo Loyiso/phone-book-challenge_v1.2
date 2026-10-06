@@ -17,6 +17,12 @@ export class ContactsPageComponent implements OnInit {
   contacts: Contact[] = [];
   actions: TableAction[] = [];
   loading: boolean = true;
+  selectedContact: Contact | null = null;
+  messageType = 'text';
+  messageBody = '';
+  isSendingMessage = false;
+  messageFeedback: string | null = null;
+  messageHasError = false;
 
   constructor(private apiService: ApiService) { }
 
@@ -41,28 +47,48 @@ export class ContactsPageComponent implements OnInit {
     return ['Name', 'Email', 'Phone'];
   }
 
-  sendMessage(contact: Contact) {
-    const type = prompt('Enter message type (text or email):');
-    const body = prompt('Enter message body:');
+  sendMessage(contact: Contact): void {
+    this.selectedContact = contact;
+    this.messageType = 'text';
+    this.messageBody = '';
+    this.messageFeedback = null;
+    this.messageHasError = false;
+  }
 
-    if (!type || !body) {
-      console.error('Message type and body are required');
+  closeMessageModal(): void {
+    if (!this.isSendingMessage) {
+      this.selectedContact = null;
+    }
+  }
+
+  submitMessage(): void {
+    const contact = this.selectedContact;
+    const body = this.messageBody.trim();
+    if (!contact || !body || this.isSendingMessage) {
       return;
     }
 
-    this.apiService.createMessage(contact.id, type, body).pipe(
+    this.isSendingMessage = true;
+    this.messageFeedback = null;
+    this.messageHasError = false;
+
+    this.apiService.createMessage(contact.id, this.messageType, body).pipe(
       tap({
-        next: (message) => {
-          console.log('Message sent successfully:', message);
+        next: () => {
+          this.messageFeedback = 'Message sent successfully.';
         },
         error: (error) => {
-          console.error('Failed to send message:', error);
+          this.messageHasError = true;
+          this.messageFeedback = error?.error?.detail ?? error?.error?.message ?? 'Message could not be sent. Please try again.';
         }
       }),
       catchError((error) => {
+        this.messageHasError = true;
+        this.messageFeedback ??= error?.error?.detail ?? error?.error?.message ?? 'Message could not be sent. Please try again.';
         return EMPTY;
       }),
       finalize(() => {
+        this.isSendingMessage = false;
       })
     ).subscribe();
   }
