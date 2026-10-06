@@ -28,6 +28,16 @@ public class Program
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.LoginPath = "/api/auth/login";
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return Task.CompletedTask;
+                };
             });
 
         builder.Services.AddControllers();

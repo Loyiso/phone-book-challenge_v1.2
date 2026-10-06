@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhoneBookAPI.Data;
+using PhoneBookAPI.Models;
 
 namespace PhoneBookAPI.Controllers;
 
@@ -36,7 +37,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("me/profile")]
-    public async Task<IActionResult> UpdateMyProfile(string name, string surname, string email)
+    public async Task<IActionResult> UpdateMyProfile(UpdateMyProfileRequest request)
     {
         var userIdString = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         if (userIdString != null)
@@ -45,13 +46,13 @@ public class UserController : ControllerBase
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if(user != null)
             {
-                var emailAlreadyInUse = await _context.Users.AnyAsync(u => u.Email == email && u.Id != userId);
+                var emailAlreadyInUse = await _context.Users.AnyAsync(u => u.Email == request.Email && u.Id != userId);
                 if(emailAlreadyInUse)
                     return BadRequest("Email already in use");
                 
-                user.Name = name;
-                user.Surname = surname;
-                user.Email = email;
+                user.Name = request.Name;
+                user.Surname = request.Surname;
+                user.Email = request.Email;
                 
                 _context.Update(user);
                 await _context.SaveChangesAsync();
@@ -64,21 +65,21 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("me/password")]
-    public async Task<IActionResult> UpdateMyPassword(string currentPassword, string newPassword, string confirmNewPassword)
+    public async Task<IActionResult> UpdateMyPassword(UpdateMyPasswordRequest request)
     {
         var userIdString = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         if (userIdString != null)
         {
-            if(newPassword != confirmNewPassword)
+            if(request.NewPassword != request.ConfirmNewPassword)
                 return BadRequest("Passwords do not match");
             
             var userId = Int32.Parse(userIdString);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if(user != null)
             {
-                if (user.Password == currentPassword)
+                if (user.Password == request.CurrentPassword)
                 {
-                    user.Password = newPassword;
+                    user.Password = request.NewPassword;
                     
                     _context.Update(user);
                     await _context.SaveChangesAsync();

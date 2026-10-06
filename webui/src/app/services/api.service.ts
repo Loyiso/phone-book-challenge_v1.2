@@ -1,8 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
 import {Observable, catchError} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {Contact, MessageModel} from '../models/contact.model';
+
+export interface UserProfile {
+  name: string;
+  surname: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +17,11 @@ import {Contact, MessageModel} from '../models/contact.model';
 export class ApiService {
   private apiUrl = 'http://localhost:5297/api/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: object) {
   }
 
   isAuthenticated() {
-    return localStorage.getItem('last_cookie_update') !== null;
+    return isPlatformBrowser(this.platformId) && localStorage.getItem('last_cookie_update') !== null;
   }
 
   signup(email: string, password: string, name: string, surname: string): Observable<string> {
@@ -45,6 +52,32 @@ export class ApiService {
         }
       })
     );
+  }
+
+  getProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}users/me`, {
+      withCredentials: true
+    });
+  }
+
+  updateProfile(name: string, surname: string, email: string): Observable<UserProfile> {
+    return this.http.post<UserProfile>(`${this.apiUrl}users/me/profile`, {
+      name,
+      surname,
+      email,
+    }, {
+      withCredentials: true
+    });
+  }
+
+  updatePassword(currentPassword: string, newPassword: string, confirmNewPassword: string): Observable<UserProfile> {
+    return this.http.post<UserProfile>(`${this.apiUrl}users/me/password`, {
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
+    }, {
+      withCredentials: true
+    });
   }
 
   getContacts(): Observable<Contact[]> {
